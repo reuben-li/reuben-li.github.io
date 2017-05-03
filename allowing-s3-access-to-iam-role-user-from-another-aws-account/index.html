@@ -1,0 +1,294 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Allowing S3 access to an IAM role/user from another AWS account</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=6c2f2f9d74">
+    <link rel="stylesheet" type="text/css" href="../assets/css/webkid.css?v=6c2f2f9d74">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="amp/index.html">
+    
+    <meta property="og:site_name" content="Datum Ex Machina">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Allowing S3 access to an IAM role/user from another AWS account">
+    <meta property="og:description" content="Allowing role/user in another AWS account to access S3 bucket Delegate access to &quot;remote&quot; (other accounts') user or role: {     &quot;Version&quot;: &quot;2012-10-17&quot;,     &quot;Statement&quot;: [         {             &quot;Sid&quot;: &quot;AllowExternal&quot;,             &quot;Effect&quot;: &quot;Allow&quot;,             &quot;Principal&quot;: {                 &quot;AWS&quot;: &quot;arn:aws:iam::1111111111111:role/remote_role&quot;             },             &quot;Action&quot;: [                 &quot;s3:GetBucketLocation&quot;,                 &quot;s3:ListBucket&quot;,                 &quot;s3:GetObject&quot;,                 &quot;s3:PutObject&quot;,                 &quot;s3:DeleteObject&quot;             ],             &quot;Resource&quot;: [                 &quot;arn:aws:">
+    <meta property="og:url" content="http://localhost:2368/allowing-s3-access-to-iam-role-user-from-another-aws-account/">
+    <meta property="article:published_time" content="2017-04-03T22:58:00.000Z">
+    <meta property="article:modified_time" content="2017-05-03T23:13:23.000Z">
+    <meta property="article:tag" content="AWS">
+    <meta property="article:tag" content="s3">
+    <meta property="article:tag" content="IAM">
+    <meta property="article:tag" content="transfer">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Allowing S3 access to an IAM role/user from another AWS account">
+    <meta name="twitter:description" content="Allowing role/user in another AWS account to access S3 bucket Delegate access to &quot;remote&quot; (other accounts') user or role: {     &quot;Version&quot;: &quot;2012-10-17&quot;,     &quot;Statement&quot;: [         {             &quot;Sid&quot;: &quot;AllowExternal&quot;,             &quot;Effect&quot;: &quot;Allow&quot;,             &quot;Principal&quot;: {                 &quot;AWS&quot;: &quot;arn:aws:iam::1111111111111:role/remote_role&quot;             },             &quot;Action&quot;: [                 &quot;s3:GetBucketLocation&quot;,                 &quot;s3:ListBucket&quot;,                 &quot;s3:GetObject&quot;,                 &quot;s3:PutObject&quot;,                 &quot;s3:DeleteObject&quot;             ],             &quot;Resource&quot;: [                 &quot;arn:aws:">
+    <meta name="twitter:url" content="http://localhost:2368/allowing-s3-access-to-iam-role-user-from-another-aws-account/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Reuben Li">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="AWS, s3, IAM, transfer">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Datum Ex Machina",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Reuben Li",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/7119c2655f93b306bf0192ee34c575e4?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://localhost:2368/author/reuben/",
+        "sameAs": []
+    },
+    "headline": "Allowing S3 access to an IAM role/user from another AWS account",
+    "url": "http://localhost:2368/allowing-s3-access-to-iam-role-user-from-another-aws-account/",
+    "datePublished": "2017-04-03T22:58:00.000Z",
+    "dateModified": "2017-05-03T23:13:23.000Z",
+    "keywords": "AWS, s3, IAM, transfer",
+    "description": "Allowing role/user in another AWS account to access S3 bucket Delegate access to &quot;remote&quot; (other accounts&#x27;) user or role: {     &quot;Version&quot;: &quot;2012-10-17&quot;,     &quot;Statement&quot;: [         {             &quot;Sid&quot;: &quot;AllowExternal&quot;,             &quot;Effect&quot;: &quot;Allow&quot;,             &quot;Principal&quot;: {                 &quot;AWS&quot;: &quot;arn:aws:iam::1111111111111:role/remote_role&quot;             },             &quot;Action&quot;: [                 &quot;s3:GetBucketLocation&quot;,                 &quot;s3:ListBucket&quot;,                 &quot;s3:GetObject&quot;,                 &quot;s3:PutObject&quot;,                 &quot;s3:DeleteObject&quot;             ],             &quot;Resource&quot;: [                 &quot;arn:aws:",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Datum Ex Machina" href="../rss.2">
+</head>
+<body class="post-template tag-aws tag-s3 tag-iam tag-transfer">
+
+    
+
+<link rel="stylesheet" href="../assets/css/prism.css">
+<script src="../assets/js/prism.js"></script>
+
+<header id="header">
+    <nav class="header-nav">
+
+      <div class="blog-title"><a href="../">Datum Ex Machina</a></div>
+
+      <!--Change this to customize the navigation-->
+      <div class="taglist-wrapper clearfix">
+        <ul id="taglist" class="taglist">
+            <li><a href="../">Home</a></li>
+            <li><a href="http://localhost:2368/tag/javascript">javascript</a></li>
+            <li><a href="http://localhost:2368/tag/nodejs">nodejs</a></li>
+            <li><a href="http://localhost:2368/tag/data-visualization">data visualization</a></li>
+            <li><a href="http://localhost:2368/tag/d3">d3</a></li>
+            <li><a href="http://localhost:2368/tag/maps">maps</a></li>
+        </ul>
+      </div>
+    </nav>
+
+</header>
+
+<main id="content" class="content" role="main">
+
+    <div id="article" class="box ">
+    
+    <article class="post tag-aws tag-s3 tag-iam tag-transfer">
+
+        <header class="post-header">
+            <h1 class="post-title">Allowing S3 access to an IAM role/user from another AWS account</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2017-04-03">03 April 2017</time>
+                <span class="author">by <a href="../author/reuben/">Reuben Li</a></span>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>Allowing role/user in another AWS account to access S3 bucket</p>
+
+<p>Delegate access to "remote" (other accounts') user or role:</p>
+
+<pre><code>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowExternal",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::1111111111111:role/remote_role"
+            },
+            "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::bucketname",
+                "arn:aws:s3:::bucketname/*"
+            ]
+        }
+    ]
+}
+</code></pre>
+
+<p>On the other AWS account, you also need to set policy to allow actions on the particular S3 bucket</p>
+
+<pre><code>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1484522264000",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:GetObjectAcl",
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::bucketname/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::bucketname"
+            ]
+        }
+    ]
+}
+</code></pre>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/reuben/" style="background-image: url(http://www.gravatar.com/avatar/7119c2655f93b306bf0192ee34c575e4?s&amp;)"><span class="hidden">Reuben Li's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/reuben/">Reuben Li</a></h4>
+
+                    <p>Read <a href="../author/reuben/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="fa fa-twitter" href="https://twitter.com/share?text=Allowing%20S3%20access%20to%20an%20IAM%20role%2Fuser%20from%20another%20AWS%20account&amp;url=http://localhost:2368/allowing-s3-access-to-iam-role-user-from-another-aws-account/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/allowing-s3-access-to-iam-role-user-from-another-aws-account/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="fa fa-google" href="https://plus.google.com/share?url=http://localhost:2368/allowing-s3-access-to-iam-role-user-from-another-aws-account/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'example'; // required: replace example with your forum shortname
+    var disqus_identifier = '';
+ 
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+    </article>
+
+</div>
+
+<div id="sidebar"><div class="box sidebox about">
+  <div class="sidebox-title">About</div>
+  <div class="sidebox-content">
+    <p>Thoughts, stories and ideas.</p>
+
+    <!--Change this to your homepage-->
+    <p>See our latest projects at <a href="http://www.webkid.io">webkid.io</a></p>
+
+  </div>
+</div>
+
+<!--Change the links to your sites-->
+<div class="sidebox box social clearfix">
+  <ul>
+    <a href="../rss.2" target="_blank" class="social-item rss"><li><i class="fa fa-rss"></i></li></a>
+    
+    <a href="http://twitter.com/webk1d" target="_blank" class="social-item tw"><li><i class="fa fa-twitter"></i></li></a>
+    
+    <a href="http://github.com/wbkd" target="_blank" class="social-item github"><li><i class="fa fa-github"></i></li></a>
+    
+    <a href="http://webkid.io" target="_blank" class="social-item home"><li><i class="fa fa-home"></i></li></a>
+
+  </ul>
+
+</div>
+
+<div class="box sidebox latest-articles">
+  <div class="sidebox-title">Latest Articles</div>
+  <div class="sidebox-content loading">
+    <div class="loader">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</main>
+
+
+
+    <footer class="site-footer clearfix">
+         <section class="copyright"><a href="../">Datum Ex Machina</a> © 2017</section>
+         <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+    </footer>
+
+    
+
+    <script type="text/javascript" src="../assets/js/jquery.min.js?v=6c2f2f9d74"></script>
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=6c2f2f9d74"></script>
+    <script type="text/javascript" src="../assets/js/jquery.xml2json.js?v=6c2f2f9d74"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=6c2f2f9d74"></script>
+    <script type="text/javascript" src="../assets/js/webkid.js?v=6c2f2f9d74"></script>
+
+</body>
